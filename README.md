@@ -5,6 +5,8 @@ You can use it to find all files with precised extension in all subdrectories in
 
 Usage:
 
+```
 ccf --help
+```
 
 that command shows all informations needed to use this project
