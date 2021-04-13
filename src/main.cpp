@@ -75,20 +75,20 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    std::cout << "\n\x1B[33mSearching in: \033[0m";
+    std::cout << "\x1B[33mSearching in: \033[0m";
     std::cout << m_search;
 
-    std::cout << "\n\n\x1B[33mType: \033[0m";
+    std::cout << "\n\x1B[33mType: \033[0m";
     std::cout << m_type;
 
-    std::cout << "\n\n\x1B[33mOutput: \033[0m";
+    std::cout << "\n\x1B[33mOutput: \033[0m";
     if(isOut) {
         std::cout << m_out;
     } else {
         std::cout << "\x1B[34mdisabled\033[0m";
     }
 
-    std::cout << "\n\n\x1B[33mCopy: \033[0m";
+    std::cout << "\n\x1B[33mCopy: \033[0m";
     if(isCopy) {
         std::cout << m_copy;
     } else {
