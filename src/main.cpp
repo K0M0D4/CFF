@@ -6,8 +6,12 @@
 #include <cstdlib>
 #include <algorithm>
 
+#include "colors.hpp"
+
 void PrtError(std::string val) {
-    std::cout << "\n\x1B[31mERROR: " << val << "\033[0m\n";
+    SetColor(RED);
+    std::cout << "\nERROR: " << val << "\n";
+    SetColor(WHITE);
 }
 
 int main(int argc, char **argv) {
@@ -25,12 +29,12 @@ int main(int argc, char **argv) {
         std::cout << "cff {where to search} {args}\n";
         std::cout << "\n";
         std::cout << "Args:\n";
-        std::cout << "\x1B[33m--type\033[0m       - specify what file type will be searched\n";
-        std::cout << "\x1B[34m--out\033[0m        - enable text output and set where to store it\n";
-        std::cout << "\x1B[32m--cp\033[0m         - enable copying files and set where to copy them\n";
+        std::cout << "--type       - specify what file type will be searched\n";
+        std::cout << "--out        - enable text output and set where to store it\n";
+        std::cout << "--cp         - enable copying files and set where to copy them\n";
         std::cout << "\n";
         std::cout << "Example:\n";
-        std::cout << "cff D:/files \x1B[33m--type\033[0m png \x1B[34m--out\033[0m E:/cff/out.txt \x1B[32m--cp\033[0m E:/cff\n";
+        std::cout << "cff D:/files --type png --out E:/cff/out.txt --cp E:/cff\n";
 
         return 0;
     }
@@ -75,24 +79,36 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    std::cout << "\x1B[33mSearching in: \033[0m";
+    SetColor(YELLOW);
+    std::cout << "Searching in: ";
+    SetColor(WHITE);
     std::cout << m_search;
 
-    std::cout << "\n\x1B[33mType: \033[0m";
+    SetColor(YELLOW);
+    std::cout << "\nType: ";
+    SetColor(WHITE);
     std::cout << m_type;
 
-    std::cout << "\n\x1B[33mOutput: \033[0m";
+    SetColor(YELLOW);
+    std::cout << "\nOutput: ";
+    SetColor(WHITE);
     if(isOut) {
         std::cout << m_out;
     } else {
-        std::cout << "\x1B[34mdisabled\033[0m";
+        SetColor(BLUE);
+        std::cout << "disabled";
+        SetColor(WHITE);
     }
 
-    std::cout << "\n\x1B[33mCopy: \033[0m";
+    SetColor(YELLOW);
+    std::cout << "\nCopy: ";
+    SetColor(WHITE);
     if(isCopy) {
         std::cout << m_copy;
     } else {
-        std::cout << "\x1B[34mdisabled\033[0m";
+        SetColor(BLUE);
+        std::cout << "disabled";
+        SetColor(WHITE);
     }
 
     std::vector<std::string> m_pathes;
@@ -105,7 +121,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    std::cout << "\n\x1B[32mSearching ended! Found " << m_pathes.size() << " files!\033[0m\n";
+    SetColor(GREEN);
+    std::cout << "\nSearching ended! Found " << m_pathes.size() << " files!\n";
+    SetColor(WHITE);
 
     if(isOut) {
         std::cout << "\nSaving directories to output file: " << m_out << "\n";
@@ -121,7 +139,9 @@ int main(int argc, char **argv) {
         }
         m_outFile.close();
 
-        std::cout << "\n\n\x1B[32mSaved " << m_pathes.size() << " directories to output file: " << m_out << "\033[0m\n";
+        SetColor(GREEN);
+        std::cout << "\n\nSaved " << m_pathes.size() << " directories to output file: " << m_out << "\n";
+        SetColor(WHITE);
     }
 
     if(isCopy) {
@@ -167,7 +187,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    std::cout << "\n\x1B[32mProgram finished!\033[0m\n";
+    SetColor(GREEN);
+    std::cout << "\nProgram finished!\n";
+    SetColor(WHITE);
     
     return 0;
 }
