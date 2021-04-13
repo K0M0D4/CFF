@@ -11,4 +11,3 @@ cff --help
 
 that command shows all informations needed to use this project
 
-This program won't run on Linux because I'm using windows.h header here!
