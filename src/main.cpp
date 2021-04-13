@@ -85,14 +85,14 @@ int main(int argc, char **argv) {
     if(isOut) {
         std::cout << m_out;
     } else {
-        std::cout << "\x18[34disabled\033[0m";
+        std::cout << "\x1B[34mdisabled\033[0m";
     }
 
     std::cout << "\n\n\x1B[33mCopy: \033[0m";
     if(isCopy) {
         std::cout << m_copy;
     } else {
-        std::cout << "\x18[34disabled\033[0m";
+        std::cout << "\x1B[34mdisabled\033[0m";
     }
 
     std::vector<std::string> m_pathes;
