@@ -3,33 +3,34 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include <windows.h>
 #include <cstdlib>
 #include <algorithm>
 
-int main(int argc, char **argv) {
-    HANDLE hOut;
-    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+void PrtError(std::string val) {
+    std::cout << "\n\x1B[31mERROR: " << val << "\033[0m\n";
+}
 
-    if(argc == 0) {
+int main(int argc, char **argv) {
+    if(argc < 2) {
+        PrtError("no input directory!");
         return -1;
     }
 
     std::string m_firstArg = argv[1];
     if(m_firstArg == "--help") {
-        std::cout << std::endl;
-        std::cout << "cff --help   - displays this message" << std::endl;
-        std::cout << std::endl;
-        std::cout << "Usage: " << std::endl;
-        std::cout << "cff {where to search} {args}" << std::endl;
-        std::cout << std::endl;
-        std::cout << "Args: " << std::endl;
-        std::cout << "--type       - specify what file type will be searched" << std::endl;
-        std::cout << "--out        - enable text output and set where to store it" << std::endl;
-        std::cout << "--cp         - enable copying files and set where to copy them" << std::endl;
-        std::cout << std::endl;
-        std::cout << "Example: " << std::endl;
-        std::cout << "cff D:/files --type png --out E:/cff/out.txt --cp E:/cff" << std::endl;
+        std::cout << "\n";
+        std::cout << "cff --help   - displays this message\n";
+        std::cout << "\n";
+        std::cout << "Usage:\n";
+        std::cout << "cff {where to search} {args}\n";
+        std::cout << "\n";
+        std::cout << "Args:\n";
+        std::cout << "\x1B[33m--type\033[0m       - specify what file type will be searched\n";
+        std::cout << "\x1B[34m--out\033[0m        - enable text output and set where to store it\n";
+        std::cout << "\x1B[32m--cp\033[0m         - enable copying files and set where to copy them\n";
+        std::cout << "\n";
+        std::cout << "Example:\n";
+        std::cout << "cff D:/files \x1B[33m--type\033[0m png \x1B[34m--out\033[0m E:/cff/out.txt \x1B[32m--cp\033[0m E:/cff\n";
 
         return 0;
     }
@@ -65,56 +66,33 @@ int main(int argc, char **argv) {
     }
 
     if(!isType) {
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED);
-        std::cout << "ERROR: no type specified! Use '--type'!\n";
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
+        PrtError("no type specified! Use '--type'!");
         return -1;
     }
 
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-    std::cout << "\nSearching in: ";
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    if(!isOut && !isCopy) {
+        PrtError("no output specified! Use '--out' or '--cp'!");
+        return -1;
+    }
+
+    std::cout << "\n\x1B[33mSearching in: \033[0m";
     std::cout << m_search;
 
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-    std::cout << "\nType: ";
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "\n\n\x1B[33mType: \033[0m";
     std::cout << m_type;
 
+    std::cout << "\n\n\x1B[33mOutput: \033[0m";
     if(isOut) {
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-        std::cout << "\nOutput: ";
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         std::cout << m_out;
+    } else {
+        std::cout << "\x18[34disabled\033[0m";
+    }
 
-        if(isCopy) {
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-            std::cout << "\nCopy: ";
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-            std::cout << m_copy;
-        } else {
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-            std::cout << "\nCopy: ";
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-            std::cout << "disabled";
-        }
-    } else if(isCopy) {
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-        std::cout << "\nOutput: ";
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-        std::cout << "diasbled";
-
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN);
-        std::cout << "\nCopy: ";
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "\n\n\x1B[33mCopy: \033[0m";
+    if(isCopy) {
         std::cout << m_copy;
     } else {
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED);
-        std::cout << "ERROR: no output specified! Use '--out' or '--cp'!\n";
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-        return -1;
+        std::cout << "\x18[34disabled\033[0m";
     }
 
     std::vector<std::string> m_pathes;
@@ -127,42 +105,32 @@ int main(int argc, char **argv) {
         }
     }
 
-    SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
-    std::cout << "\nSearching ended! Found " << m_pathes.size() << " files!\n";
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "\n\x1B[32mSearching ended! Found " << m_pathes.size() << " files!\033[0m\n";
 
     if(isOut) {
-        std::cout << "\nSaving directories to output file: " << m_out << std::endl;
+        std::cout << "\nSaving directories to output file: " << m_out << "\n";
         std::fstream m_outFile;
         m_outFile.open(m_out, std::ios::out | std::ios::trunc);
         if(!m_outFile.good()) {
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED);
-            std::cout << "ERROR: can't open '" << m_out << "'!";
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
+            PrtError("can't open '" + m_out + "'!");
             return -1;
         }
         for(auto& path : m_pathes) {
             m_outFile.write(&path[0], path.length());
-            m_outFile << std::endl;
+            m_outFile << "\n";
         }
         m_outFile.close();
 
-        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
-        std::cout << "\nSaved " << m_pathes.size() << " directories to output file: " << m_out << std::endl;
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        std::cout << "\n\n\x1B[32mSaved " << m_pathes.size() << " directories to output file: " << m_out << "\033[0m\n";
     }
 
     if(isCopy) {
         std::filesystem::space_info cp = std::filesystem::space(m_copy);
         if(m_inputSize >= cp.available) {
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED);
-            std::cout << "ERROR: files that you're trying to copy are too big!\n";
-            SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
+            PrtError("files that you're trying to copy are too big!");
             return -1;
         }
-        std::cout << "\nCopying files to: " << m_copy << std::endl << std::endl;
+        std::cout << "\nCopying files to: " << m_copy << "\n\n";
         for(uint32_t i = 0; i < m_pathes.size(); i++) {
             std::string buf = m_pathes[i];
             std::string copyBuf;
@@ -199,9 +167,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    SetConsoleTextAttribute(hOut, FOREGROUND_GREEN);
-    std::cout << "\nProgram finished!\n";
-    SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "\n\x1B[32mProgram finished!\033[0m\n";
     
     return 0;
 }
