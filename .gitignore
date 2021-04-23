@@ -1,5 +1,2 @@
 .vscode/
 build/
-git/
-src/misc.hpp
-src/typeset.hpp
