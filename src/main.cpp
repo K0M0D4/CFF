@@ -80,10 +80,10 @@ int main(int argc, char **argv) {
     }
 
     m_api.Print("Searching in: ", cff::Color::YELLOW);
-    m_api.Print(m_search);
+    m_api.Print(m_search, cff::Color::BLUE);
 
     m_api.Print("\nType: ", cff::Color::YELLOW);
-    m_api.Print(m_type);
+    m_api.Print(m_type, cff::Color::BLUE);
 
     m_api.Print("\nOutput: ", cff::Color::YELLOW);
     m_api.Print(m_out, cff::Color::BLUE);
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
         }
         m_outFile.close();
 
-        m_api.Print("\n\nSaved " + std::to_string(m_pathes.size()) + " directories to output file: " + m_out + "\n", cff::Color::GREEN);
+        m_api.Print("\nSaved " + std::to_string(m_pathes.size()) + " directories to output file: " + m_out + "\n", cff::Color::GREEN);
     }
 
     if(isCopy) {
