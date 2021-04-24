@@ -12,8 +12,6 @@ namespace cff {
     }
 
     void API::PrintError(std::string val) {
-        m_colorManager.SetColors(Color::RED, Color::RESET);
-        std::cout << "\n" << "ERROR: " << val << "\n";
-        m_colorManager.SetFgColor(Color::RESET);
+        Print("\nERROR: " + val + "\n", Color::RED_DARK, Color::RESET);
     }
 }

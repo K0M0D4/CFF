@@ -84,7 +84,12 @@ namespace cff {
     }
 
     void ColorManager::SetColors(Color fgCol, Color bgCol) {
-        SetBgColor(bgCol);
-        SetFgColor(fgCol);
+        if(fgCol == Color::RESET) {
+            SetFgColor(fgCol);
+            SetBgColor(bgCol);
+        } else {
+            SetBgColor(bgCol);
+            SetFgColor(fgCol);
+        }
     }
 }
